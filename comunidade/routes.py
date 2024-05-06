@@ -14,8 +14,10 @@ from PIL import Image
 def home():
     posts = Post.query.order_by(Post.id.desc())
     fuso_horario = timezone('America/Sao_Paulo')
-    date = posts.data_criacao.astimezone(fuso_horario)
-    return render_template('home.html', posts=posts, date=date)
+    for post in posts:
+        date = post.data_criacao.astimezone(fuso_horario)
+        post.data_criacao = date
+    return render_template('home.html', posts=posts)
 
 
 @app.route("/contatos")
