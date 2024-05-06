@@ -3,6 +3,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 from comunidade import app, database, bcrypt
 from comunidade.forms import FormLogin, FormCriarConta, FormEditarPerfil, FormCriarPost
 from comunidade.models import Usuario, Post
+from pytz import timezone
 import secrets
 import os
 from PIL import Image
@@ -130,6 +131,8 @@ def editar_perfil():
 @login_required
 def exibir_post(post_id):
     post = Post.query.get(post_id)
+    fuso_horario = timezone('America/Sao_Paulo')
+    date = post.data_criacao.astimezone(fuso_horario)
     if current_user == post.autor:
         form = FormCriarPost()
         if request.method == 'GET':
@@ -143,7 +146,7 @@ def exibir_post(post_id):
             return redirect(url_for('home'))
     else:
         form = None
-    return render_template('post.html', post=post, form=form)
+    return render_template('post.html', post=post, form=form, date=date)
 
 
 @app.route('/post/<post_id>/excluir', methods=['GET', 'POST'])
