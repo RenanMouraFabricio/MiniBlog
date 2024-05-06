@@ -3,7 +3,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 from comunidade import app, database, bcrypt
 from comunidade.forms import FormLogin, FormCriarConta, FormEditarPerfil, FormCriarPost
 from comunidade.models import Usuario, Post
-
+from pytz import timezone
 import secrets
 import os
 from PIL import Image
