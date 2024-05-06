@@ -13,6 +13,8 @@ from PIL import Image
 @login_required
 def home():
     posts = Post.query.order_by(Post.id.desc())
+    fuso_horario = timezone('America/Sao_Paulo')
+    date = posts.data_criacao.astimezone(fuso_horario)
     return render_template('home.html', posts=posts)
 
 
